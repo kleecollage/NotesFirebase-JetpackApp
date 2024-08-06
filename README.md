@@ -1,4 +1,4 @@
-# DEV
+# Notes App
 ## Prerequisites
 
 Before starting, make sure you have the following programs installed:
