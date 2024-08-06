@@ -13,9 +13,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
+import com.example.notesfirebase.viewModels.LoginViewModel
 
 @Composable
-fun TabsView() {
+fun TabsView(navController: NavController, loginVM: LoginViewModel) {
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf("Iniciar Sesion", "Registrarse")
 
@@ -39,8 +41,8 @@ fun TabsView() {
             }
         }
         when(selectedTab) {
-            0 -> LoginView()
-            1 -> RegisterView()
+            0 -> LoginView(navController, loginVM)
+            1 -> RegisterView(navController, loginVM)
         }
     }
 }
