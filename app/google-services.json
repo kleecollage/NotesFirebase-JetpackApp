@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "200711626497",
+    "project_id": "notesapp-jetpack",
+    "storage_bucket": "notesapp-jetpack.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200711626497:android:32f47b89abb756334b0500",
+        "android_client_info": {
+          "package_name": "com.example.notesfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt9gbxY4rO7JKkWLANQV-x2a1eIYGqwco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
