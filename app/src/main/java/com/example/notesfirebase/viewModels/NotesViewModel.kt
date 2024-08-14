@@ -1,5 +1,6 @@
 package com.example.notesfirebase.viewModels
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.animation.core.snap
 import androidx.compose.runtime.getValue
@@ -12,18 +13,23 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 class NotesViewModel: ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
     private val firestore = Firebase.firestore
+    private val storageRef = FirebaseStorage.getInstance().reference
+
     private val _notesData = MutableStateFlow<List<NotesState>>(emptyList())
     val notesData: StateFlow<List<NotesState>> = _notesData
 
@@ -56,15 +62,17 @@ class NotesViewModel: ViewModel() {
             }
     }
 
-    fun saveNewNote(title: String, note: String, onSuccess: () -> Unit) {
+    fun saveNewNote(title: String, note: String, image: Uri, onSuccess: () -> Unit) {
         val email = auth.currentUser?.email
         viewModelScope.launch(Dispatchers.IO) {
+            val imagePath = uploadImage(image)
             try {
                 val newNote = hashMapOf(
                     "title" to title,
                     "note" to note,
                     "date" to formatDate(),
-                    "emailUser" to email.toString()
+                    "emailUser" to email.toString(),
+                    "imagePath" to imagePath
                 )
                 firestore.collection("Notes")
                     .add(newNote)
@@ -74,6 +82,17 @@ class NotesViewModel: ViewModel() {
             } catch (e: Exception) {
                 Log.d("ERROR SAVE", "Error al guardar: ${e.localizedMessage}")
             }
+        }
+    }
+
+    private suspend fun uploadImage(image: Uri): String {
+        return try {
+            val imageRef = storageRef.child("image/${UUID.randomUUID()}")
+            val taskSnapshot = imageRef.putFile(image).await()
+            val downloadUri = taskSnapshot.metadata?.reference?.downloadUrl?.await()
+            downloadUri.toString()
+        } catch (e: Exception) {
+            ""
         }
     }
 

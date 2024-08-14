@@ -95,7 +95,7 @@ fun AddNoteView(navController: NavController, notesVM: NotesViewModel) {
                 actions = {
                     IconButton(
                         onClick = {
-                            notesVM.saveNewNote(title, note) {
+                            notesVM.saveNewNote(title, note, image) {
                                 Toast.makeText(context, "Gardado", Toast.LENGTH_SHORT).show()
                                 navController.popBackStack()
                             }
