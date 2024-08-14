@@ -78,7 +78,5 @@ fun LoginView(navController: NavController, loginVM: LoginViewModel) {
                 confirmText = "Aceptar",
                 onConfirmClick = { loginVM.closeAlert() }) { }
         }
-        
-        
     }
 }
