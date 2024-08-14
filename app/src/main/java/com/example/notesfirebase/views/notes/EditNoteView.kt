@@ -46,7 +46,7 @@ fun EditNoteView(navController: NavController, notesVM: NotesViewModel, idDoc: S
                 },
                 actions = {
                     IconButton(onClick = {
-                        notesVM.deleteNote(idDoc) {navController.popBackStack()}
+                        notesVM.deleteNote(idDoc, state.imagePath) {navController.popBackStack()}
                     }) {
                         Icon(imageVector = Icons.Default.Delete, contentDescription = "")
                     }

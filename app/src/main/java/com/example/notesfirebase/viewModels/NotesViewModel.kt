@@ -6,6 +6,7 @@ import androidx.compose.animation.core.snap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notesfirebase.model.NotesState
@@ -112,6 +113,7 @@ class NotesViewModel: ViewModel() {
                     state = state.copy(
                         title = note?.title ?: "",
                         note = note?.note ?: "",
+                        imagePath = note?.imagePath ?: ""
                     )
                 }
             }
@@ -135,8 +137,9 @@ class NotesViewModel: ViewModel() {
         }
     }
 
-    fun deleteNote(idDoc: String, onSuccess: () -> Unit) {
+    fun deleteNote(idDoc: String, image: String, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
+            deleteImage(image)
             try {
                 firestore.collection("Notes").document(idDoc)
                     .delete()
@@ -146,6 +149,15 @@ class NotesViewModel: ViewModel() {
             } catch (e: Exception) {
                 Log.d("ERROR DELETE", "Error al eliminar: ${e.localizedMessage}")
             }
+        }
+    }
+
+    suspend fun deleteImage(imageUrl: String) {
+        val imageRef = storageRef.child(imageUrl.toUri().lastPathSegment ?: "")
+        try {
+            imageRef.delete()
+        }catch (e: Exception){
+            Log.d("Error", "Fallo al eliminar la imagen")
         }
     }
 

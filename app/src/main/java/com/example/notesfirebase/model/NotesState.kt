@@ -6,4 +6,5 @@ data class NotesState(
     val title: String = "",
     val note: String = "",
     val date: String = "",
+    val imagePath: String = ""
 )

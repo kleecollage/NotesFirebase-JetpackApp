@@ -20,11 +20,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.notesfirebase.R
 
 @Composable
-fun CardNote(title: String, note: String, date: String, onClick: () -> Unit) {
+fun CardNote(
+    title: String,
+    note: String,
+    date: String,
+    onClick: () -> Unit,
+    onClickPhoto:() -> Unit
+) {
     var showAlert by remember { mutableStateOf(false) }
 
     Column(
@@ -40,6 +48,9 @@ fun CardNote(title: String, note: String, date: String, onClick: () -> Unit) {
             Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = { onClick() }) {
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "")
+            }
+            IconButton(onClick = { onClickPhoto() }) {
+                Icon(painter = painterResource(id = R.drawable.photo), contentDescription = "")
             }
         }
         HorizontalDivider()
